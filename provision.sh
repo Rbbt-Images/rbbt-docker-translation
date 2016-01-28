@@ -37,7 +37,7 @@ cat > $user_script <<'EUSER'
 echo "2.1. Custom variables"
 export RBBT_LOG="0"
 export BOOTSTRAP_WORKFLOWS="Translation"
-export REMOTE_RESOURCES="KEGG"
+export REMOTE_RESOURCES="KEGG Organism"
 
 echo "2.2. Default variables"
 #!/bin/bash -x
