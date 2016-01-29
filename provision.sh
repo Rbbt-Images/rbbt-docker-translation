@@ -2,7 +2,6 @@ cat "$0"
 echo "Running provisioning"
 echo
 
-
 # BASE SYSTEM
 echo "1. Provisioning base system"
 
@@ -37,7 +36,9 @@ cat > $user_script <<'EUSER'
 echo "2.1. Custom variables"
 export RBBT_LOG="0"
 export BOOTSTRAP_WORKFLOWS="Translation"
-export REMOTE_RESOURCES="KEGG Organism"
+export REMOTE_RESOURCES="Organism"
+export RBBT_NOCOLOR="true"
+export RBBT_NO_PROGRESS="true"
 
 echo "2.2. Default variables"
 #!/bin/bash -x
@@ -105,6 +106,11 @@ EUSER
 echo "2. Running user configuration as 'rbbt'"
 chown rbbt $user_script;
 su -l -c "bash $user_script" rbbt
+
+# CLEAN-UP
+
+RUN apt-get clean
+RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # DONE
 echo
