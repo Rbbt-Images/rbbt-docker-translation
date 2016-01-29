@@ -99,8 +99,8 @@ su -l -c "bash $user_script" rbbt
 # CODA
 # ====
 
-RUN apt-get clean
-RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+apt-get clean
+rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 echo
 echo "Installation done."
