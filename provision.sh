@@ -1,46 +1,39 @@
-cat "$0"
-echo "Running provisioning"
+#!/bin/bash -x
+
+echo "RUNNING PROVISION"
 echo
+echo "CMD: git/rbbt-image/bin/build_rbbt_provision_sh.rb -ss -sr -sg -su -w Translation -rr Organism"
 
-# BASE SYSTEM
 echo "1. Provisioning base system"
+echo
+echo SKIPPED
 
-
-# BASE SYSTEM
 echo "2. Setting up ruby"
+echo
+echo SKIPPED
 
+echo "3. Setting up gems"
+echo
+echo SKIPPED
 
-# BASE SYSTEM
-echo "2. Setting up gems"
+echo "4. Configuring user"
+echo
+echo SKIPPED
 
+echo "5. Bootstrapping workflows as 'rbbt'"
+echo
+user_script=$home_dir/.rbbt/bin/bootstrap
 
-
-
-####################
-# USER CONFIGURATION
-
-if [[ 'rbbt' == 'root' ]] ; then
-  home_dir='/root'
-else
-  useradd -ms /bin/bash rbbt
-  home_dir='/home/rbbt'
-fi
-
-user_script=$home_dir/.rbbt/bin/provision
-mkdir -p $(dirname $user_script)
-chown -R rbbt /home/rbbt/.rbbt/
 cat > $user_script <<'EUSER'
 
 . /etc/profile
 
-echo "2.1. Custom variables"
+echo "5.1. Loading custom variables"
 export RBBT_LOG="0"
 export BOOTSTRAP_WORKFLOWS="Translation"
 export REMOTE_RESOURCES="Organism"
-export RBBT_NOCOLOR="true"
-export RBBT_NO_PROGRESS="true"
 
-echo "2.2. Default variables"
+echo "5.2. Loading default variables"
 #!/bin/bash -x
 
 test -z ${RBBT_SERVER+x}           && RBBT_SERVER=http://rbbt.bioinfo.cnio.es/ 
@@ -61,32 +54,11 @@ test -z ${RBBT_LOG+x}  && RBBT_LOG="LOW"
 
 
 
-echo "2.3. Configuring rbbt"
+echo "5.3. Install and bootstrap"
 #!/bin/bash -x
 
-# GENERAL
-# -------
-
-# File servers: to speed up the production of some resources
-for resource in $REMOTE_RESOURCES; do
-    echo "Adding remote file server: $resource -- $RBBT_FILE_SERVER"
-    rbbt file_server add $resource $RBBT_FILE_SERVER
-done
-
-# Remote workflows: avoid costly cache generation
-for workflow in $REMOTE_WORKFLOWS; do
-    echo "Adding remote workflow: $workflow -- $RBBT_WORKFLOW_SERVER"
-    rbbt workflow remote add $workflow $RBBT_WORKFLOW_SERVER
-done
-
-
-
-
-echo "2.4. Bootstrap system"
-#!/bin/bash -x
-
-# APP
-# ---
+# USER RBBT BOOTSTRAP
+# ===================
 
 for workflow in $WORKFLOWS; do
     rbbt workflow install $workflow 
@@ -100,21 +72,16 @@ for workflow in $BOOTSTRAP_WORKFLOWS; do
     rbbt workflow cmd $workflow bootstrap $BOOTSTRAP_CPUS
 done
 
-
 EUSER
-####################
-echo "2. Running user configuration as 'rbbt'"
+
 chown rbbt $user_script;
 su -l -c "bash $user_script" rbbt
 
-# CLEAN-UP
+# CODA
+# ====
 
 RUN apt-get clean
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# DONE
 echo
 echo "Installation done."
-
-#--------------------------------------------------------
-
