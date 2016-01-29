@@ -54,7 +54,26 @@ test -z ${RBBT_LOG+x}  && RBBT_LOG="LOW"
 
 
 
-echo "5.3. Install and bootstrap"
+echo "5.3. Configuring rbbt"
+#!/bin/bash -x
+
+# USER RBBT CONFIG
+# ================
+
+# File servers: to speed up the production of some resources
+for resource in $REMOTE_RESOURCES; do
+    echo "Adding remote file server: $resource -- $RBBT_FILE_SERVER"
+    rbbt file_server add $resource $RBBT_FILE_SERVER
+done
+
+# Remote workflows: avoid costly cache generation
+for workflow in $REMOTE_WORKFLOWS; do
+    echo "Adding remote workflow: $workflow -- $RBBT_WORKFLOW_SERVER"
+    rbbt workflow remote add $workflow $RBBT_WORKFLOW_SERVER
+done
+
+#
+echo "5.4. Install and bootstrap"
 #!/bin/bash -x
 
 # USER RBBT BOOTSTRAP
