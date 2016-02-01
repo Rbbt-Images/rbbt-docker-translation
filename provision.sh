@@ -2,26 +2,33 @@
 
 echo "RUNNING PROVISION"
 echo
-echo "CMD: git/rbbt-image/bin/build_rbbt_provision_sh.rb -ss -sr -sg -su -w Translation -rr Organism"
+echo "CMD: ../rbbt-image/bin/build_rbbt_provision_sh.rb -ss -sr -sg -su -w Translation -rr Organism"
 
 echo "1. Provisioning base system"
-echo
 echo SKIPPED
+echo
 
 echo "2. Setting up ruby"
-echo
 echo SKIPPED
+echo
 
 echo "3. Setting up gems"
-echo
 echo SKIPPED
+echo
 
 echo "4. Configuring user"
-echo
 echo SKIPPED
+echo
 
 echo "5. Bootstrapping workflows as 'rbbt'"
 echo
+
+if [[ 'rbbt' == 'root' ]] ; then
+  home_dir='/root'
+else
+  home_dir='/home/rbbt'
+fi
+
 user_script=$home_dir/.rbbt/bin/bootstrap
 
 cat > $user_script <<'EUSER'
