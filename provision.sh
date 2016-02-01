@@ -2,7 +2,7 @@
 
 echo "RUNNING PROVISION"
 echo
-echo "CMD: ../rbbt-image/bin/build_rbbt_provision_sh.rb -ss -sr -sg -su -w Translation -rr Organism"
+echo "CMD: build_rbbt_provision_sh.rb -ss -sr -sg -su -w Translation -rr Organism --nocolor --nobar"
 
 echo "1. Provisioning base system"
 echo SKIPPED
@@ -39,6 +39,8 @@ echo "5.1. Loading custom variables"
 export RBBT_LOG="0"
 export BOOTSTRAP_WORKFLOWS="Translation"
 export REMOTE_RESOURCES="Organism"
+export RBBT_NOCOLOR="true"
+export RBBT_NO_PROGRESS="true"
 
 echo "5.2. Loading default variables"
 #!/bin/bash -x
