@@ -2,7 +2,7 @@
 
 echo "RUNNING PROVISION"
 echo
-echo "CMD: build_rbbt_provision_sh.rb -ss -sr -sg -su -w Translation -rr Organism --nocolor --nobar"
+echo "CMD: build_rbbt_provision_sh.rb -ss -sr -sg -su -w Translation -rr Organism --nocolor --nobar --optimize"
 
 echo "1. Provisioning base system"
 echo SKIPPED
@@ -110,6 +110,8 @@ su -l -c "bash $user_script" rbbt
 
 apt-get clean
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+su -l -c 'rbbt system optimize /home/rbbt/.rbbt ' rbbt
 
 echo
 echo "Installation done."
